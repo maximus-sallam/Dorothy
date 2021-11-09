@@ -7,7 +7,7 @@ import pyautogui
 # https://docs.python.org/3/library/time.html
 import time
 
-with open(r'curl_encoded.txt') as write_this:
+with open(r'chatbot.txt') as write_this:
     contents = write_this.read()
 time.sleep(3)
 pyautogui.typewrite(contents, interval=0.001)

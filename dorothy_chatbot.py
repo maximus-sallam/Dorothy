@@ -6,19 +6,18 @@ import string  # to process standard python strings
 import warnings
 from sklearn.feature_extraction.text import TfidfVectorizer as tfidf_vectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-import warnings
 import nltk
 from nltk.stem import WordNetLemmatizer
 
 warnings.filterwarnings("ignore")
 
 # For downloading packages.
-nltk.download("popular",
-              quiet=True)
+nltk.download("popular", quiet=True)
 
+# First-time use only.
 # Uncomment the following only the first time.
-# nltk.download("punkt") # First-time use only.
-# nltk.download("wordnet") # First-time use only.
+# nltk.download("punkt")
+# nltk.download("wordnet")
 
 
 # Reading in the corpus.
@@ -79,7 +78,7 @@ def response(response_from_user):
 
 
 flag = True
-print("Dorothy: My name is Dorothy. I will answer your queries about chatbots. If you want to exit, type Bye!")
+print("Dorothy: My name is Dorothy. I will answer your questions about chatbots. If you want to exit, type Bye!")
 while flag:
     user_response = input()
     user_response = user_response.lower()
