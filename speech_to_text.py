@@ -1,3 +1,7 @@
+# Speech-to-text / text-to-speech
+
+# Import necessary libraries.
+
 # This module provides a portable way of using operating system dependent functionality.
 # https://docs.python.org/3/library/os.html
 import os
@@ -46,7 +50,7 @@ from scipy.io.wavfile import write
 # Sample rate.
 fs = 44100
 # Duration of recording.
-seconds = 10
+seconds = 5
 
 
 print("Recording...")
@@ -82,7 +86,7 @@ voice = texttospeech.VoiceSelectionParams(language_code="en-US",
                                           ssml_gender=texttospeech.SsmlVoiceGender.FEMALE)
 
 # Selects the type of audio file to return.
-audio_config = texttospeech.AudioConfig(speaking_rate=0.80,
+audio_config = texttospeech.AudioConfig(speaking_rate=1.0,
                                         audio_encoding=texttospeech.AudioEncoding.MP3)
 
 # Performs the text-to-speech request on the text input with the selected voice parameters and audio file type.

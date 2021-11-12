@@ -1,11 +1,32 @@
-# Meet Dorothy: your friend.
+# Dorothy: Your AI companion.
 
 # Import necessary libraries.
+
+# This module implements pseudo-random number generators for various distributions.
+# https://docs.python.org/3/library/random.html
 import random
-import string  # to process standard python strings
+
+# The built-in string class provides the ability to do complex variable
+# substitutions and value formatting via the format() method described in
+# PEP 3101. The Formatter class in the string module allows you to create and
+# customize your own string formatting behaviors using the same implementation
+# as the built-in format() method.
+# https://docs.python.org/3/library/string.html
+import string
+
+# Warning messages are typically issued in situations where it is useful to
+# alert the user of some condition in a program, where that condition (normally)
+# doesn’t warrant raising an exception and terminating the program.
+# https://docs.python.org/3/library/warnings.html
 import warnings
+
+# A set of python modules for machine learning and data mining.
+# https://pypi.org/project/sklearn/
 from sklearn.feature_extraction.text import TfidfVectorizer as tfidf_vectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+
+# The Natural Language Toolkit (NLTK) is a Python package for natural language processing.
+# https://pypi.org/project/nltk/
 import nltk
 from nltk.stem import WordNetLemmatizer
 
@@ -27,12 +48,14 @@ with open("chatbot.txt", "r",
     raw = fin.read().lower()
 
 # Tokenization.
-sent_tokens = nltk.sent_tokenize(raw)  # converts to list of sentences
-word_tokens = nltk.word_tokenize(raw)  # converts to list of words
+# converts to list of sentences
+sent_tokens = nltk.sent_tokenize(raw)
+
+# converts to list of words
+word_tokens = nltk.word_tokenize(raw)
 
 # Preprocessing.
 lemmer = WordNetLemmatizer()
-
 
 def lem_tokens(tokens):
     return [lemmer.lemmatize(token) for token in tokens]

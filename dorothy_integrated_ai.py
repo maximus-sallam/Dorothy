@@ -1,3 +1,7 @@
+# Dorothy integrated AI / speech-to-text / text-to-speech / mouth articulation
+
+# Import necessary libraries.
+
 # The Natural Language Toolkit (NLTK) is a Python package for natural
 # language processing.
 # https://pypi.org/project/nltk/

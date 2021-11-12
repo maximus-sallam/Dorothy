@@ -1,3 +1,7 @@
+# ARPAbet text-to-speech / mouth articulation
+
+# Import necessary libraries.
+
 # The Natural Language Toolkit (NLTK) is a Python package for natural language processing.
 # https://pypi.org/project/nltk/
 import nltk
@@ -29,11 +33,6 @@ from google.cloud import texttospeech
 # your own string formatting behaviors using the same implementation as the built-in format() method.
 # https://docs.python.org/3/library/string.html
 import string
-
-# Manipulate audio with an simple and easy high level interface.
-# Pydub lets you do stuff to audio in a way that isn't stupid.
-# https://pypi.org/project/pydub/
-from pydub import AudioSegment
 
 
 # Google Wavenet API credentials file.
