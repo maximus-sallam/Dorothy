@@ -49,14 +49,14 @@ client = texttospeech.TextToSpeechClient()
 arpabet = nltk.corpus.cmudict.dict()
 
 # Change this to the port your Arduino is connected to.
-serial_port = serial.Serial("COM7", 9600) 
+serial_port = serial.Serial("COM3", 9600)
 
 while True:
     try:
         # Takes an input sentence.
-        your_sentence = input("Enter your sentence:")
+        # your_sentence = input("Enter your sentence:")
         # Test speech - For adjusting servo settings. Comment this out in production.
-#        your_sentence = "Hello. My name is Dorothy. I am a robot and I am here to help you succeed."
+        your_sentence = "Hello. My name is Dorothy. I would like to get to know you."
 
         # Set the text input to be synthesized.
         synthesis_input = texttospeech.SynthesisInput(text=your_sentence)
@@ -75,6 +75,10 @@ while True:
                                             voice=voice,
                                             audio_config=audio_config)
 
+        # Writes the synthetic audio to the output file.
+        with open("output.mp3", "wb") as out:
+            out.write(response.audio_content)
+
         #  Separates the input sentence into a list, converts all characters to lowercase, and strips away punctuation.
         your_sentence = your_sentence.lower().translate(str.maketrans("", "", string.punctuation))
         your_sentence = your_sentence.split()
@@ -86,11 +90,19 @@ while True:
             result.append(arpabet[words])
         array_length = len(result)
 
+        # Plays the synthetic audio.
+        mixer.init()
+        mixer.music.load("output.mp3")
+        mixer.music.play()
+
         # Prints each phoneme separated by a "."
         for x in range(0, array_length):
             word_length = len(result[x][0])
             for y in range(0, word_length):
                 print(result[x][0][y], end="")
+
+                # Sets the rate at which the mouth moves.
+                time.sleep(0.0075)
                 serial_port.write(result[x][0][y].encode())
                 print(".", end="")
                 serial_port.write(".".encode())
@@ -99,15 +111,6 @@ while True:
         # Writes each phoneme to the Arduino COM port.
         serial_port.write("$".encode())
         print(" wrote to Arduino.")
-
-        # Writes the synthetic audio to the output file.
-        with open("output.mp3", "wb") as out:
-            out.write(response.audio_content)
-
-        # Plays the synthetic audio.
-        mixer.init()
-        mixer.music.load("output.mp3")
-        mixer.music.play()
 
         # Waits for audio to finish playing and stops the audio.
         while mixer.music.get_busy():
@@ -119,6 +122,7 @@ while True:
 
         # Deletes the created audio file.
         os.remove("output.mp3")
+        break
 
     except KeyError:
         print("An error has occurred. Try again.")
