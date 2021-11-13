@@ -105,7 +105,7 @@ lemmer = WordNetLemmatizer()
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "text-to-speech-278712-83ab5ff5f64a.json"
 
 # Introduction.
-intro = "My name is Dorothy. I will answer your questions about chatbots. If you want to exit, type Bye!"
+intro = "My name's Dorothy. I'll answer your questions about chatbots. If you want to stop, say Bye!"
 
 
 def text_to_speech(user_input):
@@ -156,27 +156,29 @@ def speech_to_text():
     fs = 44100
     # Duration of recording.
     seconds = 5
+    # Speech recognizer.
+    recognizer = speech_recognition.Recognizer()
 
     print("Recording...")
-    my_recording = sounddevice.rec(int(seconds * fs), samplerate=fs, channels=2)
+    my_recording = sounddevice.rec((seconds * fs), samplerate=fs, channels=2)
     sounddevice.wait()  # Wait until recording is finished
-    write("recording.rwav", fs, my_recording)  # Save as WAV file
+    write("raw_recording.wav", fs, my_recording)  # Save as WAV file
     print("Recording finished.")
 
-    sound = AudioSegment.from_wav("recording.rwav")
+    sound = AudioSegment.from_wav("raw_recording.wav")
     sound.export("recording.wav", format="wav")
 
     microphone = speech_recognition.AudioFile("recording.wav")
     with microphone as source:
         audio = recognizer.record(source)
 
-    recognizer = speech_recognition.Recognizer()
+    # Deletes the created audio files.
+    os.remove("raw_recording.wav")
+    os.remove("recording.wav")
+
+    # Print and return recording.
     print(recognizer.recognize_google(audio))
     return recognizer.recognize_google(audio)
-
-    # Deletes the created audio files.
-    os.remove("recording.rwav")
-    os.remove("recording.wav")
 
 
 def lem_tokens(tokens):
@@ -192,7 +194,7 @@ def lem_normalize(text):
 
 # Keyword Matching.
 GREETING_INPUTS = ("hello", "hi", "greetings", "sup", "what's up", "hey",)
-GREETING_RESPONSES = ["hi", "hey", "howdy", "hi there", "hello", "I am glad you are talking to me", "how do you do"]
+GREETING_RESPONSES = ["fuck my ass", "hi", "hey", "howdy", "hi there", "hello", "I'm glad you are talking to me", "how do you do"]
 
 
 def greeting(sentence):
@@ -206,8 +208,7 @@ def greeting(sentence):
 def response(response_from_user):
     dorothy_response = ""
     sent_tokens.append(response_from_user)
-    tfidf_vector = tfidf_vectorizer(tokenizer=lem_normalize,
-                                    stop_words="english")
+    tfidf_vector = tfidf_vectorizer(tokenizer=lem_normalize, stop_words="english")
     tfidf = tfidf_vector.fit_transform(sent_tokens)
     values = cosine_similarity(tfidf[-1], tfidf)
     idx = values.argsort()[0][-2]
@@ -215,7 +216,7 @@ def response(response_from_user):
     flat.sort()
     req_tfidf = flat[-2]
     if req_tfidf == 0:
-        dorothy_response = dorothy_response + "I am sorry! I don't understand you"
+        dorothy_response = dorothy_response + "I'm sorry! I don't understand you"
         return dorothy_response
     else:
         dorothy_response = dorothy_response + sent_tokens[idx]
@@ -223,21 +224,24 @@ def response(response_from_user):
 
 
 text_to_speech(intro)
-# speech_to_text()
-while True:
-    user_response = speech_to_text()
-    user_response = user_response.lower()
-    if user_response != "bye":
-        if user_response == "thanks" or user_response == "thank you":
-            flag = False
-            text_to_speech("You are welcome..")
-        else:
-            if greeting(user_response) is not None:
-                text_to_speech(greeting(user_response))
+flag = True
+while flag == True:
+    try:
+        user_response = speech_to_text()
+        user_response = user_response.lower()
+        if user_response != "bye":
+            if user_response == "thanks" or user_response == "thank you":
+                text_to_speech("You're welcome..")
             else:
-                print(end="")
-                text_to_speech(response(user_response))
-                sent_tokens.remove(user_response)
-    else:
-        flag = False
-        text_to_speech("Bye! take care..")
+                if greeting(user_response) is not None:
+                    text_to_speech(greeting(user_response))
+                else:
+                    print(end="")
+                    text_to_speech(response(user_response))
+                    sent_tokens.remove(user_response)
+        else:
+            flag = False
+            text_to_speech("Bye! take care..")
+    except speech_recognition.UnknownValueError:
+        text_to_speech("I'm sorry! I didn't hear what you said. Can you please repeat that?")
+        continue
