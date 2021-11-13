@@ -131,12 +131,12 @@ def text_to_speech(user_input):
     synthetic_response = client.synthesize_speech(input=synthesis_input, voice=voice, audio_config=audio_config)
 
     # Writes the synthetic audio to the output file.
-    with open("test.mp3", "wb") as out:
+    with open("synthetic.mp3", "wb") as out:
         out.write(synthetic_response.audio_content)
 
     # Plays the synthetic audio.
 
-    mixer.music.load("test.mp3")
+    mixer.music.load("synthetic.mp3")
     mixer.music.play()
 
     # Waits for audio to finish playing and stops the audio.
@@ -148,7 +148,7 @@ def text_to_speech(user_input):
     mixer.music.unload()
 
     # Deletes the created audio files.
-    os.remove("test.mp3")
+    os.remove("synthetic.mp3")
 
 
 def speech_to_text():
