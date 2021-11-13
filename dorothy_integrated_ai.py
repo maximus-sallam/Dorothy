@@ -249,3 +249,7 @@ while flag is True:
     except speech_recognition.UnknownValueError:
         text_to_speech("I'm sorry! I didn't hear what you said. Can you please repeat that?")
         continue
+    except wikipedia.exceptions.PageError:
+        text_to_speech("I'm sorry! I couldn't find anything about that."
+                       "Could you please try a different search phrase?")
+        continue
