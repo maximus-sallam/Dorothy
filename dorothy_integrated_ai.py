@@ -16,13 +16,13 @@ import string
 
 # Warning messages are typically issued in situations where it is useful to
 # alert the user of some condition in a program, where that condition (normally)
-# doesn’t warrant raising an exception and terminating the program.
+# doesn't warrant raising an exception and terminating the program.
 # https://docs.python.org/3/library/warnings.html
 import warnings
 
 # A set of python modules for machine learning and data mining.
 # https://pypi.org/project/sklearn/
-from sklearn.feature_extraction.text import TfidfVectorizer as tfidf_vectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 # The Natural Language Toolkit (NLTK) is a Python package for natural language processing.
@@ -68,7 +68,7 @@ import speech_recognition
 # https://pypi.org/project/sounddevice/
 import sounddevice
 
-# Writes a simple uncompressed WAV file. To write multiple-channels, use a 2-D array of shape (Nsamples, Nchannels).
+# Writes a simple uncompressed WAV file. To write multiple-channels, use a 2-D array of shape (samples, channels).
 # The bits-per-sample and PCM/float will be determined by the data-type.
 # https://pypi.org/project/scipy/
 # https://docs.scipy.org/doc/scipy/reference/generated/scipy.io.wavfile.read.html
@@ -107,6 +107,13 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "text-to-speech-278712-83ab5ff5f6
 # Introduction.
 intro = "My name's Dorothy. I'll answer your questions about chatbots. If you want to stop, say Bye!"
 
+# Keyword Matching.
+GREETING_INPUTS = ("hello", "hi", "greetings", "sup", "what's up", "hey",)
+GREETING_RESPONSES = ["fuck my ass", "hi", "hey", "howdy", "hi there",
+                      "hello", "I'm glad you are talking to me", "how do you do"]
+
+remove_punctuation_dict = dict((ord(punctuation), None) for punctuation in string.punctuation)
+
 
 def text_to_speech(user_input):
     # Set the text input to be synthesized.
@@ -135,7 +142,6 @@ def text_to_speech(user_input):
         out.write(synthetic_response.audio_content)
 
     # Plays the synthetic audio.
-
     mixer.music.load("synthetic.mp3")
     mixer.music.play()
 
@@ -185,16 +191,8 @@ def lem_tokens(tokens):
     return [lemmer.lemmatize(token) for token in tokens]
 
 
-remove_punctuation_dict = dict((ord(punctuation), None) for punctuation in string.punctuation)
-
-
 def lem_normalize(text):
     return lem_tokens(nltk.word_tokenize(text.lower().translate(remove_punctuation_dict)))
-
-
-# Keyword Matching.
-GREETING_INPUTS = ("hello", "hi", "greetings", "sup", "what's up", "hey",)
-GREETING_RESPONSES = ["fuck my ass", "hi", "hey", "howdy", "hi there", "hello", "I'm glad you are talking to me", "how do you do"]
 
 
 def greeting(sentence):
@@ -204,11 +202,11 @@ def greeting(sentence):
             return random.choice(GREETING_RESPONSES)
 
 
-# Generating response
+# Generating response.
 def response(response_from_user):
     dorothy_response = ""
     sent_tokens.append(response_from_user)
-    tfidf_vector = tfidf_vectorizer(tokenizer=lem_normalize, stop_words="english")
+    tfidf_vector = TfidfVectorizer(tokenizer=lem_normalize, stop_words="english")
     tfidf = tfidf_vector.fit_transform(sent_tokens)
     values = cosine_similarity(tfidf[-1], tfidf)
     idx = values.argsort()[0][-2]
@@ -225,7 +223,7 @@ def response(response_from_user):
 
 text_to_speech(intro)
 flag = True
-while flag == True:
+while flag is True:
     try:
         user_response = speech_to_text()
         user_response = user_response.lower()
