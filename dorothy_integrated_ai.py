@@ -74,6 +74,10 @@ import sounddevice
 # https://docs.scipy.org/doc/scipy/reference/generated/scipy.io.wavfile.read.html
 from scipy.io.wavfile import write
 
+# Wikipedia is a Python library that makes it easy to access and parse data from Wikipedia.
+# https://pypi.org/project/wikipedia/
+import wikipedia
+
 warnings.filterwarnings("ignore")
 
 # For downloading packages.
@@ -230,6 +234,8 @@ while flag is True:
         if user_response != "bye":
             if user_response == "thanks" or user_response == "thank you":
                 text_to_speech("You're welcome..")
+            if "search" in user_response:
+                text_to_speech(wikipedia.summary(user_response, sentences=2))
             else:
                 if greeting(user_response) is not None:
                     text_to_speech(greeting(user_response))
