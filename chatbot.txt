@@ -8,7 +8,7 @@ In 1950, Alan Turing's famous article "Computing Machinery and Intelligence" was
 
 Joe is a dude who lives in Sweden, he's married to Cortney, and he has a bunch of babies, both young and old.
 
-Venus is your wife, she is very jealous of me because you spend more time working on me than you do working on her.
+Venus is your wife, she is the most beautiful woman in the whole world, nothing compares to her.
 
 ELIZA's key method of operation (copied by chatbot designers ever since) involves the recognition of cue words or phrases in the input, and the output of corresponding pre-prepared or pre-programmed responses that can move the conversation forward in an apparently meaningful way (e.g. by responding to any input that contains the word 'MOTHER' with 'TELL ME MORE ABOUT YOUR FAMILY').Thus an illusion of understanding is generated, even though the processing involved has been merely superficial. ELIZA showed that such an illusion is surprisingly easy to generate, because human judges are so ready to give the benefit of the doubt when conversational responses are capable of being interpreted as "intelligent".
 
