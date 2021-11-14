@@ -38,6 +38,11 @@ import os
 # https://docs.python.org/3/library/time.html
 import time
 
+# This module provides access to Transport Layer Security (often known as “Secure Sockets Layer”)
+# encryption and peer authentication facilities for network sockets, both client-side and server-side.
+# https://docs.python.org/3/library/ssl.html
+import ssl
+
 # Cloud Text-to-Speech API: Synthesizes natural-sounding speech by applying powerful neural network models.
 # https://pypi.org/project/google-cloud-texttospeech/
 from google.cloud import texttospeech
@@ -81,10 +86,15 @@ import wikipedia
 warnings.filterwarnings("ignore")
 
 # For downloading packages.
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    pass
+else:
+    ssl._create_default_https_context = _create_unverified_https_context
 nltk.download("popular", quiet=True)
 
-# First-time use only.
-# Uncomment the following only the first time.
+# First-time use only - Uncomment the following only the first time.
 # nltk.download("punkt")
 # nltk.download("wordnet")
 
@@ -170,11 +180,13 @@ def speech_to_text():
     recognizer = speech_recognition.Recognizer()
 
     print("Recording...")
-    my_recording = sounddevice.rec((seconds * fs), samplerate=fs, channels=2)
+    my_recording = sounddevice.rec((seconds * fs), samplerate=fs, channels=1)
     sounddevice.wait()  # Wait until recording is finished
     write("raw_recording.wav", fs, my_recording)  # Save as WAV file
     print("Recording finished.")
 
+    # Converts wav file to readable wave file.
+    # Future improvement: find a way to not have to convert the wav file.
     sound = AudioSegment.from_wav("raw_recording.wav")
     sound.export("recording.wav", format="wav")
 
