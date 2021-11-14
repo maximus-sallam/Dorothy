@@ -85,7 +85,7 @@ import wikipedia
 
 warnings.filterwarnings("ignore")
 
-# For downloading packages.
+# For downloading packages on macOS.
 try:
     _create_unverified_https_context = ssl._create_unverified_context
 except AttributeError:
