@@ -92,6 +92,8 @@ except AttributeError:
     pass
 else:
     ssl._create_default_https_context = _create_unverified_https_context
+
+# Downloads the NLTK popular library.
 nltk.download("popular", quiet=True)
 
 # First-time use only - Uncomment the following only the first time.
