@@ -253,17 +253,19 @@ while flag is True:
                 text_to_speech("You're welcome..")
                 continue
             if "search" in user_response:
-                text_to_speech(wikipedia.summary(user_response, sentences=2))
                 print("Dorothy:", wikipedia.summary(user_response, sentences=2))
+                text_to_speech(wikipedia.summary(user_response, sentences=2))
 
             else:
                 if greeting(user_response) is not None:
-                    print("Dorothy:", greeting(user_response))
-                    text_to_speech(greeting(user_response))
+                    this_greeting = greeting(user_response)
+                    print("Dorothy:", this_greeting)
+                    text_to_speech(this_greeting)
                 else:
                     print(end="")
-                    print("Dorothy:", response(user_response))
-                    text_to_speech(response(user_response))
+                    this_response = response(user_response)
+                    print("Dorothy:", this_response)
+                    text_to_speech(this_response)
                     sent_tokens.remove(user_response)
 
     except speech_recognition.UnknownValueError:
