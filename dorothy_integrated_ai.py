@@ -249,7 +249,7 @@ while flag is True:
             flag = False
             text_to_speech("Bye! take care..")
         else:
-            if "thanks" or "thank you" in user_response:
+            if "thanks" in user_response or "thank you" in user_response:
                 text_to_speech("You're welcome..")
                 continue
             if "search" in user_response:
