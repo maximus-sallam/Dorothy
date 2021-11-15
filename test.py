@@ -1,4 +1,5 @@
-# ARPAbet text-to-speech / mouth articulation
+# Dorothy: Your AI companion / NLTK ARPAbet mouth articulation / Google Wavenet speech synthesis /
+# speech-to-text voice recognition / machine learning chatbot.
 
 # Import necessary libraries.
 
