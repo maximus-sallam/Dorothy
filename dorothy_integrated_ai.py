@@ -107,8 +107,7 @@ with open("chatbot.txt", "r",
           errors="ignore") as fin:
     raw = fin.read().lower()
 
-# Tokenization.
-# converts to list of sentences
+# Tokenization - Converts to list of sentences
 sent_tokens = nltk.sent_tokenize(raw)
 
 # converts to list of words
