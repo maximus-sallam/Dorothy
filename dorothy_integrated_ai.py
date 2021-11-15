@@ -185,7 +185,7 @@ def speech_to_text():
     my_recording = sounddevice.rec((seconds * fs), samplerate=fs, channels=1)
     sounddevice.wait()  # Wait until recording is finished
     write("raw_recording.wav", fs, my_recording)  # Save as WAV file
-    print("Recording finished.")
+    print("Processing...")
 
     # Converts wav file to readable wave file.
     # Future improvement: find a way to not have to convert the wav file.
@@ -201,7 +201,7 @@ def speech_to_text():
     os.remove("recording.wav")
 
     # Print and return recording.
-    print(recognizer.recognize_google(audio))
+    print("You said:", recognizer.recognize_google(audio))
     return recognizer.recognize_google(audio)
 
 
