@@ -177,7 +177,7 @@ def speech_to_text():
     # Sample rate.
     fs = 44100
     # Duration of recording.
-    seconds = 5
+    seconds = 6
     # Speech recognizer.
     recognizer = speech_recognition.Recognizer()
 
