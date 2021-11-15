@@ -272,9 +272,12 @@ while flag is True:
                     sent_tokens.remove(user_response)
 
     except speech_recognition.UnknownValueError:
+        print("I'm sorry! I didn't hear what you said. Can you please repeat that?")
         text_to_speech("I'm sorry! I didn't hear what you said. Can you please repeat that?")
         continue
     except wikipedia.exceptions.PageError:
+        print("I'm sorry! I couldn't find anything about that."
+              "Could you please try a different search phrase?")
         text_to_speech("I'm sorry! I couldn't find anything about that."
                        "Could you please try a different search phrase?")
         continue
