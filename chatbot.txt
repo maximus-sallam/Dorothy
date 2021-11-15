@@ -114,9 +114,9 @@ growing since the F8 Conference when Zuckerberg unveiled that Messenger would al
 
 Chatbots have also been incorporated into devices not primarily meant for computing such as toys.
 
-Hello Barbie is an Internet-connected version of the doll that uses a chatbot provided by the company ToyTalk, which
-previously used the chatbot for a range of smartphone-based characters for children, these characters' behaviors are
-constrained by a set of rules that in effect emulate a particular character and produce a storyline.
+Hello Barbie is an internet connected version of the doll that uses a chatbot provided by the company ToyTalk, which
+previously used the chatbot for a range of smartphone based characters for children, these characters' behaviors are
+constrained by a set of rules that in effect emulate a particular character and produce a story line.
 
 IBM's Watson computer has been used as the basis for chatbot-based educational toys for companies such as CogniToys
 intended to interact with children for educational purposes.

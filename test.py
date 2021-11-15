@@ -201,7 +201,7 @@ def speech_to_text():
     # Speech recognizer.
     recognizer = speech_recognition.Recognizer()
 
-    time.sleep(10)
+    time.sleep(15)
     print("Recording...")
     my_recording = sounddevice.rec((seconds * fs), samplerate=fs, channels=1)
     sounddevice.wait()  # Wait until recording is finished
@@ -233,7 +233,7 @@ class MouthArticulation(Thread):
         #  Separates the input sentence into a list, converts all characters to lowercase, and strips away punctuation.
         your_sentence = your_sentence.lower().translate(str.maketrans("", "", string.punctuation))
         your_sentence = your_sentence.split()
-        print("You Typed:", your_sentence)
+        # print("You Typed:", your_sentence)
 
         # Finds an ARPAbet translation of each word in the sentence and stores it in the result array.
         result = []
@@ -245,18 +245,29 @@ class MouthArticulation(Thread):
         for x in range(0, array_length):
             word_length = len(result[x][0])
             for y in range(0, word_length):
-                print(result[x][0][y], end="")
+                # print(result[x][0][y], end="")
 
                 # Sets the rate at which the mouth moves.
                 time.sleep(0.075)
                 serial_port.write(result[x][0][y].encode())
-                print(".", end="")
+                # print(".", end="")
                 serial_port.write(".".encode())
-        print("$", end="")
+        # print("$", end="")
 
         # Writes each phoneme to the Arduino COM port.
         serial_port.write("$".encode())
-        print(" wrote to Arduino.")
+#        print(" wrote to Arduino.")
+
+
+def thread_mouth_and_voice(speaking):
+    text_to_speech = TextToSpeech()
+    mouth_articulation = MouthArticulation()
+    threads = [
+        Thread(target=text_to_speech.text_to_speech, args=(speaking,)),
+        Thread(target=mouth_articulation.mouth_articulation, args=(speaking,))
+    ]
+    for thread in threads:
+        thread.start()
 
 
 def lem_tokens(tokens):
@@ -295,15 +306,7 @@ def response(response_from_user):
 
 # Introduction.
 print(intro)
-text_to_speech = TextToSpeech()
-mouth_articulation = MouthArticulation()
-
-threads = [
-    Thread(target=text_to_speech.text_to_speech, args=(intro,)),
-    Thread(target=mouth_articulation.mouth_articulation, args=(intro,))
-]
-for thread in threads:
-    thread.start()
+thread_mouth_and_voice(intro)
 
 flag = True
 
@@ -316,76 +319,45 @@ while flag is True:
             flag = False
             bye = "Bye! Take care."
             print("Dorothy:", bye)
-            threads = [
-                Thread(target=text_to_speech.text_to_speech, args=(bye,)),
-                Thread(target=mouth_articulation.mouth_articulation, args=(bye,))
-            ]
-            for thread in threads:
-                thread.start()
+            thread_mouth_and_voice(bye)
+            break
 
         else:
             if "thanks" in user_response or "thank you" in user_response:
                 welcome = "You are welcome."
                 print("Dorothy:", welcome)
-                threads = [
-                    Thread(target=text_to_speech.text_to_speech, args=(welcome,)),
-                    Thread(target=mouth_articulation.mouth_articulation, args=(welcome,))
-                ]
-                for thread in threads:
-                    thread.start()
+                thread_mouth_and_voice(welcome)
                 continue
 
             if "search" in user_response:
                 summery = wikipedia.summary(user_response, sentences=2)
                 print("Dorothy:", summery)
-                threads = [
-                    Thread(target=text_to_speech.text_to_speech, args=(summery,)),
-                    Thread(target=mouth_articulation.mouth_articulation, args=(summery,))
-                ]
-                for thread in threads:
-                    thread.start()
+                thread_mouth_and_voice(summery)
+                continue
 
             else:
                 if greeting(user_response) is not None:
                     this_greeting = greeting(user_response)
                     print("Dorothy:", this_greeting)
-                    threads = [
-                        Thread(target=text_to_speech.text_to_speech, args=(this_greeting,)),
-                        Thread(target=mouth_articulation.mouth_articulation, args=(this_greeting,))
-                    ]
-                for thread in threads:
-                    thread.start()
+                    thread_mouth_and_voice(this_greeting)
+                    continue
 
                 else:
                     print(end="")
                     this_response = response(user_response)
                     print("Dorothy:", this_response)
-                    threads = [
-                        Thread(target=text_to_speech.text_to_speech, args=(this_response,)),
-                        Thread(target=mouth_articulation.mouth_articulation, args=(this_response,))
-                    ]
-                    for thread in threads:
-                        thread.start()
-                    sent_tokens.remove(user_response)
+                    thread_mouth_and_voice(this_response)
+                    sent_tokens.remove(this_response)
+                    continue
 
     except speech_recognition.UnknownValueError:
         repeat_that = "I'm sorry! I did not hear what you said. Can you please repeat that?"
         print("Dorothy:", repeat_that)
-        threads = [
-            Thread(target=text_to_speech.text_to_speech, args=(repeat_that,)),
-            Thread(target=mouth_articulation.mouth_articulation, args=(repeat_that,))
-        ]
-        for thread in threads:
-            thread.start()
+        thread_mouth_and_voice(repeat_that)
         continue
 
     except wikipedia.exceptions.PageError:
         no_results = "I'm sorry! I couldn't find anything about that. Could you please try a different search phrase?"
         print("Dorothy:", no_results)
-        threads = [
-            Thread(target=text_to_speech.text_to_speech, args=(no_results,)),
-            Thread(target=mouth_articulation.mouth_articulation, args=(no_results,))
-        ]
-        for thread in threads:
-            thread.start()
+        thread_mouth_and_voice(no_results)
         continue
