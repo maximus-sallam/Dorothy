@@ -18,6 +18,10 @@ import random
 # https://docs.python.org/3/library/string.html
 import string
 
+# This module constructs higher-level threading interfaces on top of the lower level _thread module.
+# https://docs.python.org/3/library/threading.html
+from threading import Thread
+
 # Warning messages are typically issued in situations where it is useful to
 # alert the user of some condition in a program, where that condition (normally)
 # doesn't warrant raising an exception and terminating the program.
@@ -111,10 +115,10 @@ with open("chatbot.txt", "r",
           errors="ignore") as fin:
     raw = fin.read().lower()
 
-# Tokenization - Converts to list of sentences.
+# Tokenization - Converts to a list of sentences.
 sent_tokens = nltk.sent_tokenize(raw)
 
-# converts to list of words
+# Tokenization - Converts to a list of words.
 word_tokens = nltk.word_tokenize(raw)
 
 # Preprocessing.
@@ -126,7 +130,7 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "text-to-speech-278712-83ab5ff5f6
 # Introduction.
 intro = "My name is Dorothy. I will answer your questions about artificial intelligence. If you want to stop, say Bye!"
 
-# Keyword Matching.
+# Keyword matching.
 GREETING_INPUTS = ("hello", "hi", "greetings", "sup", "what's up", "hey",)
 GREETING_RESPONSES = ["fuck my ass", "hi", "hey", "howdy", "hi there",
                       "hello", "I'm glad you are talking to me", "how do you do"]
@@ -144,48 +148,51 @@ arpabet = nltk.corpus.cmudict.dict()
 serial_port = serial.Serial("COM3", 9600)
 
 
-def text_to_speech(user_input):
-    # Set the text input to be synthesized.
-    synthesis_input = texttospeech.SynthesisInput(text=user_input)
+# Converts text to speech.
+class TextToSpeech(Thread):
+    def text_to_speech(self, user_input):
+        # Set the text input to be synthesized.
+        synthesis_input = texttospeech.SynthesisInput(text=user_input)
 
-    # Build the voice request, select language code ("en-US") and the ssml voice gender ("female").
-    voice = texttospeech.VoiceSelectionParams(language_code="en-US",
-                                              name="en-US-Wavenet-F",
-                                              ssml_gender=texttospeech.SsmlVoiceGender.FEMALE)
+        # Build the voice request, select language code ("en-US") and the ssml voice gender ("female").
+        voice = texttospeech.VoiceSelectionParams(language_code="en-US",
+                                                  name="en-US-Wavenet-F",
+                                                  ssml_gender=texttospeech.SsmlVoiceGender.FEMALE)
 
-    # Selects the type of audio file to return.
-    audio_config = texttospeech.AudioConfig(speaking_rate=1.0,
-                                            audio_encoding=texttospeech.AudioEncoding.MP3)
+        # Selects the type of audio file to return.
+        audio_config = texttospeech.AudioConfig(speaking_rate=1.0,
+                                                audio_encoding=texttospeech.AudioEncoding.MP3)
 
-    # Instantiates a client.
-    client = texttospeech.TextToSpeechClient()
+        # Instantiates a client.
+        client = texttospeech.TextToSpeechClient()
 
-    # Initializes mixer.
-    mixer.init()
+        # Initializes mixer.
+        mixer.init()
 
-    # Performs the text-to-speech request on the text input with the selected voice parameters and audio file type.
-    synthetic_response = client.synthesize_speech(input=synthesis_input, voice=voice, audio_config=audio_config)
+        # Performs the text-to-speech request on the text input with the selected voice parameters and audio file type.
+        synthetic_response = client.synthesize_speech(input=synthesis_input, voice=voice, audio_config=audio_config)
 
-    # Writes the synthetic audio to the output file.
-    with open("synthetic.mp3", "wb") as out:
-        out.write(synthetic_response.audio_content)
+        # Writes the synthetic audio to the output file.
+        with open("synthetic.mp3", "wb") as out:
+            out.write(synthetic_response.audio_content)
 
-    # Plays the synthetic audio.
-    mixer.music.load("synthetic.mp3")
-    mixer.music.play()
+        # Plays the synthetic audio.
+        mixer.music.load("synthetic.mp3")
+        mixer.music.play()
 
-    # Waits for audio to finish playing and stops the audio.
-    while mixer.music.get_busy():
-        time.sleep(1)
-    mixer.music.stop()
+        # Waits for audio to finish playing and stops the audio.
+        while mixer.music.get_busy():
+            time.sleep(1)
+        mixer.music.stop()
 
-    # Unloads the synthetic audio from resource allocation.
-    mixer.music.unload()
+        # Unloads the synthetic audio from resource allocation.
+        mixer.music.unload()
 
-    # Deletes the created audio files.
-    os.remove("synthetic.mp3")
+        # Deletes the created audio files.
+        os.remove("synthetic.mp3")
 
 
+# Converts speech to text.
 def speech_to_text():
     # Sample rate.
     fs = 44100
@@ -194,6 +201,7 @@ def speech_to_text():
     # Speech recognizer.
     recognizer = speech_recognition.Recognizer()
 
+    time.sleep(10)
     print("Recording...")
     my_recording = sounddevice.rec((seconds * fs), samplerate=fs, channels=1)
     sounddevice.wait()  # Wait until recording is finished
@@ -218,34 +226,37 @@ def speech_to_text():
     return recognizer.recognize_google(audio)
 
 
-def mouth_articulation(your_sentence):
-    #  Separates the input sentence into a list, converts all characters to lowercase, and strips away punctuation.
-    your_sentence = your_sentence.lower().translate(str.maketrans("", "", string.punctuation))
-    your_sentence = your_sentence.split()
-    print("You Typed:", your_sentence)
+# Articulates the mouth of the robot.
+class MouthArticulation(Thread):
+    def mouth_articulation(self, your_sentence):
+        time.sleep(2)
+        #  Separates the input sentence into a list, converts all characters to lowercase, and strips away punctuation.
+        your_sentence = your_sentence.lower().translate(str.maketrans("", "", string.punctuation))
+        your_sentence = your_sentence.split()
+        print("You Typed:", your_sentence)
 
-    # Finds an ARPAbet translation of each word in the sentence and stores it in the result array.
-    result = []
-    for words in your_sentence:
-        result.append(arpabet[words])
-    array_length = len(result)
+        # Finds an ARPAbet translation of each word in the sentence and stores it in the result array.
+        result = []
+        for words in your_sentence:
+            result.append(arpabet[words])
+        array_length = len(result)
 
-    # Prints each phoneme separated by a "."
-    for x in range(0, array_length):
-        word_length = len(result[x][0])
-        for y in range(0, word_length):
-            print(result[x][0][y], end="")
+        # Prints each phoneme separated by a "."
+        for x in range(0, array_length):
+            word_length = len(result[x][0])
+            for y in range(0, word_length):
+                print(result[x][0][y], end="")
 
-            # Sets the rate at which the mouth moves.
-            time.sleep(0.0075)
-            serial_port.write(result[x][0][y].encode())
-            print(".", end="")
-            serial_port.write(".".encode())
-    print("$", end="")
+                # Sets the rate at which the mouth moves.
+                time.sleep(0.075)
+                serial_port.write(result[x][0][y].encode())
+                print(".", end="")
+                serial_port.write(".".encode())
+        print("$", end="")
 
-    # Writes each phoneme to the Arduino COM port.
-    serial_port.write("$".encode())
-    print(" wrote to Arduino.")
+        # Writes each phoneme to the Arduino COM port.
+        serial_port.write("$".encode())
+        print(" wrote to Arduino.")
 
 
 def lem_tokens(tokens):
@@ -284,8 +295,16 @@ def response(response_from_user):
 
 # Introduction.
 print(intro)
-mouth_articulation(intro)
-text_to_speech(intro)
+text_to_speech = TextToSpeech()
+mouth_articulation = MouthArticulation()
+
+threads = [
+    Thread(target=text_to_speech.text_to_speech, args=(intro,)),
+    Thread(target=mouth_articulation.mouth_articulation, args=(intro,))
+]
+for thread in threads:
+    thread.start()
+
 flag = True
 
 # Main loop.
@@ -295,45 +314,78 @@ while flag is True:
         user_response = user_response.lower()
         if "bye" in user_response:
             flag = False
-            text_to_speech("Bye! Take care.")
-            mouth_articulation("Bye! Take care.")
+            bye = "Bye! Take care."
+            print("Dorothy:", bye)
+            threads = [
+                Thread(target=text_to_speech.text_to_speech, args=(bye,)),
+                Thread(target=mouth_articulation.mouth_articulation, args=(bye,))
+            ]
+            for thread in threads:
+                thread.start()
 
         else:
             if "thanks" in user_response or "thank you" in user_response:
-                mouth_articulation("You're welcome.")
-                text_to_speech("You're welcome.")
+                welcome = "You are welcome."
+                print("Dorothy:", welcome)
+                threads = [
+                    Thread(target=text_to_speech.text_to_speech, args=(welcome,)),
+                    Thread(target=mouth_articulation.mouth_articulation, args=(welcome,))
+                ]
+                for thread in threads:
+                    thread.start()
                 continue
 
             if "search" in user_response:
-                print("Dorothy:", wikipedia.summary(user_response, sentences=2))
-                mouth_articulation(wikipedia.summary(user_response, sentences=2))
-                text_to_speech(wikipedia.summary(user_response, sentences=2))
+                summery = wikipedia.summary(user_response, sentences=2)
+                print("Dorothy:", summery)
+                threads = [
+                    Thread(target=text_to_speech.text_to_speech, args=(summery,)),
+                    Thread(target=mouth_articulation.mouth_articulation, args=(summery,))
+                ]
+                for thread in threads:
+                    thread.start()
 
             else:
                 if greeting(user_response) is not None:
                     this_greeting = greeting(user_response)
                     print("Dorothy:", this_greeting)
-                    mouth_articulation(this_greeting)
-                    text_to_speech(this_greeting)
+                    threads = [
+                        Thread(target=text_to_speech.text_to_speech, args=(this_greeting,)),
+                        Thread(target=mouth_articulation.mouth_articulation, args=(this_greeting,))
+                    ]
+                for thread in threads:
+                    thread.start()
 
                 else:
                     print(end="")
                     this_response = response(user_response)
                     print("Dorothy:", this_response)
-                    mouth_articulation(this_response)
-                    text_to_speech(this_response)
+                    threads = [
+                        Thread(target=text_to_speech.text_to_speech, args=(this_response,)),
+                        Thread(target=mouth_articulation.mouth_articulation, args=(this_response,))
+                    ]
+                    for thread in threads:
+                        thread.start()
                     sent_tokens.remove(user_response)
 
     except speech_recognition.UnknownValueError:
-        repeat_that = "I'm sorry! I didn't hear what you said. Can you please repeat that?"
-        print(repeat_that)
-        mouth_articulation(repeat_that)
-        text_to_speech(repeat_that)
+        repeat_that = "I'm sorry! I did not hear what you said. Can you please repeat that?"
+        print("Dorothy:", repeat_that)
+        threads = [
+            Thread(target=text_to_speech.text_to_speech, args=(repeat_that,)),
+            Thread(target=mouth_articulation.mouth_articulation, args=(repeat_that,))
+        ]
+        for thread in threads:
+            thread.start()
         continue
 
     except wikipedia.exceptions.PageError:
         no_results = "I'm sorry! I couldn't find anything about that. Could you please try a different search phrase?"
-        print(no_results)
-        mouth_articulation(no_results)
-        text_to_speech(no_results)
+        print("Dorothy:", no_results)
+        threads = [
+            Thread(target=text_to_speech.text_to_speech, args=(no_results,)),
+            Thread(target=mouth_articulation.mouth_articulation, args=(no_results,))
+        ]
+        for thread in threads:
+            thread.start()
         continue
