@@ -225,6 +225,17 @@ class MouthArticulation(Thread):
 #        print(" wrote to Arduino.")
 
 
+def thread_mouth_and_voice(speaking):
+    text_to_speech = TextToSpeech()
+    mouth_articulation = MouthArticulation()
+    threads = [
+        Thread(target=text_to_speech.text_to_speech, args=(speaking,)),
+        Thread(target=mouth_articulation.mouth_articulation, args=(speaking,))
+    ]
+    for thread in threads:
+        thread.start()
+
+
 # Converts speech to text.
 def speech_to_text():
     # Sample rate.
@@ -257,17 +268,6 @@ def speech_to_text():
     # Print and return recording.
     print("You said:", recognizer.recognize_google(audio))
     return recognizer.recognize_google(audio)
-
-
-def thread_mouth_and_voice(speaking):
-    text_to_speech = TextToSpeech()
-    mouth_articulation = MouthArticulation()
-    threads = [
-        Thread(target=text_to_speech.text_to_speech, args=(speaking,)),
-        Thread(target=mouth_articulation.mouth_articulation, args=(speaking,))
-    ]
-    for thread in threads:
-        thread.start()
 
 
 def lem_tokens(tokens):
