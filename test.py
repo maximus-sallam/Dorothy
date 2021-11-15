@@ -124,7 +124,7 @@ lemmer = WordNetLemmatizer()
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "text-to-speech-278712-83ab5ff5f64a.json"
 
 # Introduction.
-intro = "My name's Dorothy. I'll answer your questions about chatbots. If you want to stop, say Bye!"
+intro = "My name is Dorothy. I will answer your questions about artificial intelligence. If you want to stop, say Bye!"
 
 # Keyword Matching.
 GREETING_INPUTS = ("hello", "hi", "greetings", "sup", "what's up", "hey",)
@@ -284,6 +284,7 @@ def response(response_from_user):
 
 # Introduction.
 print(intro)
+mouth_articulation(intro)
 text_to_speech(intro)
 flag = True
 
@@ -299,47 +300,40 @@ while flag is True:
 
         else:
             if "thanks" in user_response or "thank you" in user_response:
-                text_to_speech("You're welcome.")
                 mouth_articulation("You're welcome.")
+                text_to_speech("You're welcome.")
                 continue
 
             if "search" in user_response:
                 print("Dorothy:", wikipedia.summary(user_response, sentences=2))
-                text_to_speech(wikipedia.summary(user_response, sentences=2))
                 mouth_articulation(wikipedia.summary(user_response, sentences=2))
+                text_to_speech(wikipedia.summary(user_response, sentences=2))
 
             else:
                 if greeting(user_response) is not None:
                     this_greeting = greeting(user_response)
                     print("Dorothy:", this_greeting)
-                    text_to_speech(this_greeting)
                     mouth_articulation(this_greeting)
+                    text_to_speech(this_greeting)
 
                 else:
                     print(end="")
                     this_response = response(user_response)
                     print("Dorothy:", this_response)
-                    text_to_speech(this_response)
                     mouth_articulation(this_response)
+                    text_to_speech(this_response)
                     sent_tokens.remove(user_response)
 
     except speech_recognition.UnknownValueError:
         repeat_that = "I'm sorry! I didn't hear what you said. Can you please repeat that?"
         print(repeat_that)
-        text_to_speech(repeat_that)
         mouth_articulation(repeat_that)
+        text_to_speech(repeat_that)
         continue
 
     except wikipedia.exceptions.PageError:
         no_results = "I'm sorry! I couldn't find anything about that. Could you please try a different search phrase?"
         print(no_results)
-        text_to_speech(no_results)
         mouth_articulation(no_results)
-        continue
-
-    except KeyError:
-        error = "An error has occurred. Please try again."
-        print(error)
-        text_to_speech(error)
-        mouth_articulation(error)
+        text_to_speech(no_results)
         continue
