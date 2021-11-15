@@ -225,6 +225,7 @@ class MouthArticulation(Thread):
 #        print(" wrote to Arduino.")
 
 
+# Articulates the mouth and synthesizes speech simultaneously.
 def thread_mouth_and_voice(speaking):
     text_to_speech = TextToSpeech()
     mouth_articulation = MouthArticulation()
