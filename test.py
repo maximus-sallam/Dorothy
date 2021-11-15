@@ -137,7 +137,7 @@ GREETING_RESPONSES = ["fuck my ass", "hi", "hey", "howdy", "hi there",
 # Removes punctuation.
 remove_punctuation_dict = dict((ord(punctuation), None) for punctuation in string.punctuation)
 
-# The dictionary contains 127069 entries.  Of these, 119400 words are assigned
+# The dictionary contains 127069 entries. Of these, 119400 words are assigned
 # a unique pronunciation, 6830 words have two pronunciations, and 839 words have
 # three or more pronunciations.  Many of these are fast-speech variants.
 # https://www.nltk.org/_modules/nltk/corpus/reader/cmudict.html
