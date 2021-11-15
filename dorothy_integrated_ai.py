@@ -245,9 +245,13 @@ while flag is True:
     try:
         user_response = speech_to_text()
         user_response = user_response.lower()
-        if user_response != "bye":
+        if "bye" in user_response:
+            flag = False
+            text_to_speech("Bye! take care..")
+        else:
             if user_response == "thanks" or user_response == "thank you":
                 text_to_speech("You're welcome..")
+                continue
             if "search" in user_response:
                 text_to_speech(wikipedia.summary(user_response, sentences=2))
             else:
@@ -257,9 +261,6 @@ while flag is True:
                     print(end="")
                     text_to_speech(response(user_response))
                     sent_tokens.remove(user_response)
-        else:
-            flag = False
-            text_to_speech("Bye! take care..")
     except speech_recognition.UnknownValueError:
         text_to_speech("I'm sorry! I didn't hear what you said. Can you please repeat that?")
         continue
