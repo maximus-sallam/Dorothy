@@ -2,10 +2,6 @@
 
 # Import necessary libraries.
 
-# Python Serial Port Extension for Win32, OSX, Linux, BSD, Jython, IronPython.
-# https://pypi.org/project/pyserial/
-import serial
-
 # This module implements pseudo-random number generators for various distributions.
 # https://docs.python.org/3/library/random.html
 import random
@@ -28,16 +24,6 @@ from threading import Thread
 # https://docs.python.org/3/library/warnings.html
 import warnings
 
-# A set of python modules for machine learning and data mining.
-# https://pypi.org/project/sklearn/
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
-
-# The Natural Language Toolkit (NLTK) is a Python package for natural language processing.
-# https://pypi.org/project/nltk/
-import nltk
-from nltk.stem import WordNetLemmatizer
-
 # This module provides a portable way of using operating system dependent functionality.
 # https://docs.python.org/3/library/os.html
 import os
@@ -51,16 +37,28 @@ import time
 # https://docs.python.org/3/library/ssl.html
 import ssl
 
+# Python Serial Port Extension for Win32, OSX, Linux, BSD, Jython, IronPython.
+# https://pypi.org/project/pyserial/
+import serial
+
+# A set of python modules for machine learning and data mining.
+# https://pypi.org/project/sklearn/
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+# The Natural Language Toolkit (NLTK) is a Python package for natural language processing.
+# https://pypi.org/project/nltk/
+import nltk
+from nltk.stem import WordNetLemmatizer
+
 # Cloud Text-to-Speech API: Synthesizes natural-sounding speech by applying powerful neural network models.
 # https://pypi.org/project/google-cloud-texttospeech/
 from google.cloud import texttospeech
 
 # pygame is a free and open-source cross-platform library for the development of multimedia applications like video
 # games using Python. It uses the Simple DirectMedia Layer library and several other popular libraries to abstract
-# the most common functions, making writing these programs a more intuitive task.
-# This module contains classes for loading Sound objects and controlling playback. The mixer module is optional and
-# depends on SDL_mixer. Your program should test that pygame.mixerpygame module for loading and playing sounds is
-# available and initialized before using it.
+# the most common functions, making writing these programs a more intuitive task. This module contains classes for
+# loading Sound objects and controlling playback. The mixer module is optional and depends on SDL_mixer.
 # https://pypi.org/project/pygame/
 # http://www.pygame.org/docs/ref/mixer.html
 from pygame import mixer
