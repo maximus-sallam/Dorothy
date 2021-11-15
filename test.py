@@ -192,6 +192,39 @@ class TextToSpeech(Thread):
         os.remove("synthetic.mp3")
 
 
+# Articulates the mouth of the robot.
+class MouthArticulation(Thread):
+    def mouth_articulation(self, your_sentence):
+        time.sleep(3)
+        #  Separates the input sentence into a list, converts all characters to lowercase, and strips away punctuation.
+        your_sentence = your_sentence.lower().translate(str.maketrans("", "", string.punctuation))
+        your_sentence = your_sentence.split()
+        # print("You Typed:", your_sentence)
+
+        # Finds an ARPAbet translation of each word in the sentence and stores it in the result array.
+        result = []
+        for words in your_sentence:
+            result.append(arpabet[words])
+        array_length = len(result)
+
+        # Prints each phoneme separated by a "."
+        for x in range(0, array_length):
+            word_length = len(result[x][0])
+            for y in range(0, word_length):
+                # print(result[x][0][y], end="")
+
+                # Sets the rate at which the mouth moves.
+                time.sleep(0.07)
+                serial_port.write(result[x][0][y].encode())
+                # print(".", end="")
+                serial_port.write(".".encode())
+        # print("$", end="")
+
+        # Writes each phoneme to the Arduino COM port.
+        serial_port.write("$".encode())
+#        print(" wrote to Arduino.")
+
+
 # Converts speech to text.
 def speech_to_text():
     # Sample rate.
@@ -224,39 +257,6 @@ def speech_to_text():
     # Print and return recording.
     print("You said:", recognizer.recognize_google(audio))
     return recognizer.recognize_google(audio)
-
-
-# Articulates the mouth of the robot.
-class MouthArticulation(Thread):
-    def mouth_articulation(self, your_sentence):
-        time.sleep(3)
-        #  Separates the input sentence into a list, converts all characters to lowercase, and strips away punctuation.
-        your_sentence = your_sentence.lower().translate(str.maketrans("", "", string.punctuation))
-        your_sentence = your_sentence.split()
-        # print("You Typed:", your_sentence)
-
-        # Finds an ARPAbet translation of each word in the sentence and stores it in the result array.
-        result = []
-        for words in your_sentence:
-            result.append(arpabet[words])
-        array_length = len(result)
-
-        # Prints each phoneme separated by a "."
-        for x in range(0, array_length):
-            word_length = len(result[x][0])
-            for y in range(0, word_length):
-                # print(result[x][0][y], end="")
-
-                # Sets the rate at which the mouth moves.
-                time.sleep(0.07)
-                serial_port.write(result[x][0][y].encode())
-                # print(".", end="")
-                serial_port.write(".".encode())
-        # print("$", end="")
-
-        # Writes each phoneme to the Arduino COM port.
-        serial_port.write("$".encode())
-#        print(" wrote to Arduino.")
 
 
 def thread_mouth_and_voice(speaking):
