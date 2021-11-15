@@ -254,15 +254,15 @@ while flag is True:
                 continue
             if "search" in user_response:
                 text_to_speech(wikipedia.summary(user_response, sentences=2))
-                print(wikipedia.summary(user_response, sentences=2))
+                print("Dorothy:", wikipedia.summary(user_response, sentences=2))
 
             else:
                 if greeting(user_response) is not None:
-                    print(greeting(user_response))
+                    print("Dorothy:", greeting(user_response))
                     text_to_speech(greeting(user_response))
                 else:
                     print(end="")
-                    print(response(user_response))
+                    print("Dorothy:", response(user_response))
                     text_to_speech(response(user_response))
                     sent_tokens.remove(user_response)
 
