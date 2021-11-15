@@ -33,6 +33,19 @@ Joe is a dude who lives in Sweden, he's married to Cortney, and he has a bunch o
 
 Venus is your wife, she is the most beautiful woman in the whole world, nothing compares to her.
 
+The classic historic early chatbots are ELIZA (1966) and PARRY (1972), more recent notable programs include ALICE,
+Jabberwacky and DUDE (Agence Nationale de la Recherche and CNRS 2006), while ELIZA and PARRY were used exclusively to
+simulate typed conversation, many chatbots now include functional features such as games and web searching abilities, in
+1984, a book called The Policeman's Beard is Half Constructed was published, allegedly written by the chatbot Racter
+(though the program as released would not have been capable of doing so).
+
+One important field of AI research is natural language processing, usually, weak AI fields employ specialized software
+or programming languages created specifically for the narrow function required, for example, ALICE uses a markup
+language called AIML, which is specific to its function as a conversational agent, and has since been adopted by various
+other developers of, so called, Alicebots, nevertheless, ALICE is still purely based on pattern matching techniques
+without any reasoning capabilities, the same technique ELIZA was using back in 1966, this is not strong AI, which would
+require sapience and logical reasoning abilities.
+
 ELIZA's key method of operation (copied by chatbot designers ever since) involves the recognition of cue words or
 phrases in the input, and the output of corresponding pre-prepared or pre-programmed responses that can move the
 conversation forward in an apparently meaningful way, for example, by responding to any input that contains the word
@@ -52,19 +65,6 @@ Weizenbaum's "shelf, reserved for the curious" to that marked "genuinely useful 
 
 Potatoes are a starchy tuber of the plant Solanum tuberosum and is a root vegetable native to the Americas, with the
 plant itself being a perennial in the nightshade family Solanaceae.
-
-The classic historic early chatbots are ELIZA (1966) and PARRY (1972), more recent notable programs include ALICE,
-Jabberwacky and DUDE (Agence Nationale de la Recherche and CNRS 2006), while ELIZA and PARRY were used exclusively to
-simulate typed conversation, many chatbots now include functional features such as games and web searching abilities, in
-1984, a book called The Policeman's Beard is Half Constructed was published, allegedly written by the chatbot Racter
-(though the program as released would not have been capable of doing so).
-
-One important field of AI research is natural language processing, usually, weak AI fields employ specialized software
-or programming languages created specifically for the narrow function required, For example, ALICE uses a markup
-language called AIML, which is specific to its function as a conversational agent, and has since been adopted by various
-other developers of, so called, Alicebots, nevertheless, ALICE is still purely based on pattern matching techniques
-without any reasoning capabilities, the same technique ELIZA was using back in 1966, this is not strong AI, which would
-require sapience and logical reasoning abilities.
 
 Jabberwacky learns new responses and context based on real-time user interactions, rather than being driven from a
 static database, Some more recent chatbots also combine real-time learning with evolutionary algorithms that optimise

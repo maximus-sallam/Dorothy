@@ -239,7 +239,7 @@ def response(response_from_user):
         return dorothy_response
 
 
-text_to_speech(intro)
+#text_to_speech(intro)
 flag = True
 while flag is True:
     try:
@@ -254,13 +254,18 @@ while flag is True:
                 continue
             if "search" in user_response:
                 text_to_speech(wikipedia.summary(user_response, sentences=2))
+                print(wikipedia.summary(user_response, sentences=2))
+
             else:
                 if greeting(user_response) is not None:
+                    print(greeting(user_response))
                     text_to_speech(greeting(user_response))
                 else:
                     print(end="")
+                    print(response(user_response))
                     text_to_speech(response(user_response))
                     sent_tokens.remove(user_response)
+
     except speech_recognition.UnknownValueError:
         text_to_speech("I'm sorry! I didn't hear what you said. Can you please repeat that?")
         continue
