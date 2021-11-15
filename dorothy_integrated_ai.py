@@ -238,9 +238,12 @@ def response(response_from_user):
         dorothy_response = dorothy_response + sent_tokens[idx]
         return dorothy_response
 
-
-#text_to_speech(intro)
+# Introduction.
+print(intro)
+text_to_speech(intro)
 flag = True
+
+# Main loop.
 while flag is True:
     try:
         user_response = speech_to_text()
