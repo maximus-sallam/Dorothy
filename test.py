@@ -201,7 +201,7 @@ def speech_to_text():
     # Speech recognizer.
     recognizer = speech_recognition.Recognizer()
 
-    time.sleep(15)
+    time.sleep(12)
     print("Recording...")
     my_recording = sounddevice.rec((seconds * fs), samplerate=fs, channels=1)
     sounddevice.wait()  # Wait until recording is finished
@@ -229,7 +229,7 @@ def speech_to_text():
 # Articulates the mouth of the robot.
 class MouthArticulation(Thread):
     def mouth_articulation(self, your_sentence):
-        time.sleep(2)
+        time.sleep(3)
         #  Separates the input sentence into a list, converts all characters to lowercase, and strips away punctuation.
         your_sentence = your_sentence.lower().translate(str.maketrans("", "", string.punctuation))
         your_sentence = your_sentence.split()
@@ -248,7 +248,7 @@ class MouthArticulation(Thread):
                 # print(result[x][0][y], end="")
 
                 # Sets the rate at which the mouth moves.
-                time.sleep(0.075)
+                time.sleep(0.07)
                 serial_port.write(result[x][0][y].encode())
                 # print(".", end="")
                 serial_port.write(".".encode())

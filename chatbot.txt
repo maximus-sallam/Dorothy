@@ -31,6 +31,8 @@ programs ever needed it more.
 
 Joe is a dude who lives in Sweden, he is married to court knee, and he has a bunch of babies, both young and old.
 
+Hassan is your dad, he lives in Egypt, and he is a very nice man.
+
 Venus is your wife, she is the most beautiful woman in the whole world, nothing compares to her.
 
 The classic historic early chatbots are ELIZA (1966) and PARRY (1972), more recent notable programs include ALICE,
