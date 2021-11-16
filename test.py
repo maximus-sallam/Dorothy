@@ -131,8 +131,7 @@ intro = "My name is Dorothy. I will answer your questions about artificial intel
 
 # Keyword matching.
 GREETING_INPUTS = ("hello", "hi", "greetings", "sup", "what's up", "hey",)
-GREETING_RESPONSES = ["fuck my ass", "hi", "hey", "howdy", "hi there",
-                      "hello", "I'm glad you are talking to me", "how do you do"]
+GREETING_RESPONSES = ["hi", "hey", "howdy", "hi there", "hello", "I'm glad you are talking to me", "how do you do"]
 
 # Removes punctuation.
 remove_punctuation_dict = dict((ord(punctuation), None) for punctuation in string.punctuation)
