@@ -143,12 +143,13 @@ remove_punctuation_dict = dict((ord(punctuation), None) for punctuation in strin
 arpabet = nltk.corpus.cmudict.dict()
 
 # Change this to the port your Arduino is connected to.
-serial_port = serial.Serial("COM3", 9600)
+#serial_port = serial.Serial("COM3", 9600)
 
 
 # Converts text to speech.
 class TextToSpeech(Thread):
-    def text_to_speech(self, user_input):
+    @staticmethod
+    def text_to_speech(user_input):
         # Set the text input to be synthesized.
         synthesis_input = texttospeech.SynthesisInput(text=user_input)
 
@@ -192,7 +193,8 @@ class TextToSpeech(Thread):
 
 # Articulates the mouth of the robot.
 class MouthArticulation(Thread):
-    def mouth_articulation(self, your_sentence):
+    @staticmethod
+    def mouth_articulation(your_sentence):
         time.sleep(3)
         #  Separates the input sentence into a list, converts all characters to lowercase, and strips away punctuation.
         your_sentence = your_sentence.lower().translate(str.maketrans("", "", string.punctuation))
