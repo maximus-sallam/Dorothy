@@ -222,7 +222,7 @@ class MouthArticulation(Thread):
 
         # Writes each phoneme to the Arduino COM port.
         serial_port.write("$".encode())
-#        print(" wrote to Arduino.")
+        # print(" wrote to Arduino.")
 
 
 # Articulates the mouth and synthesizes speech simultaneously.
