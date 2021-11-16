@@ -143,7 +143,7 @@ remove_punctuation_dict = dict((ord(punctuation), None) for punctuation in strin
 arpabet = nltk.corpus.cmudict.dict()
 
 # Change this to the port your Arduino is connected to.
-#serial_port = serial.Serial("COM3", 9600)
+serial_port = serial.Serial("COM3", 9600)
 
 
 # Converts text to speech.
