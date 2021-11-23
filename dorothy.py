@@ -240,7 +240,7 @@ def thread_mouth_and_voice(speaking):
 # Converts speech to text.
 def speech_to_text():
     # Sample rate.
-    fs = 44100
+    fs = 48000
     # Duration of recording.
     seconds = 6
     # Speech recognizer.
