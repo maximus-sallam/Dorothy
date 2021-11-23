@@ -124,7 +124,7 @@ intro = "My name's Dorothy. I'll answer your questions about chatbots. If you wa
 
 # Keyword Matching.
 GREETING_INPUTS = ("hello", "hi", "greetings", "sup", "what's up", "hey",)
-GREETING_RESPONSES = ["fuck my ass", "hi", "hey", "howdy", "hi there",
+GREETING_RESPONSES = ["hi", "hey", "howdy", "hi there",
                       "hello", "I'm glad you are talking to me", "how do you do"]
 
 remove_punctuation_dict = dict((ord(punctuation), None) for punctuation in string.punctuation)
