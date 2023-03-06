@@ -190,7 +190,7 @@ def openai_engine(prompt):
         frequency_penalty=0,
         presence_penalty=0)
     answer = openai_response["choices"][0].text
-    print(answer)
+    print("Dorothy: " + answer)
     return answer
 
 
