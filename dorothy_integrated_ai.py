@@ -2,6 +2,13 @@
 
 # Import necessary libraries.
 
+# The OpenAI Python library provides convenient access to the OpenAI API from
+# applications written in the Python language. It includes a pre-defined set of
+# classes for API resources that initialize themselves dynamically from API responses
+# which makes it compatible with a wide range of versions of the OpenAI API.
+# https://pypi.org/project/openai/
+import openai
+
 # This module implements pseudo-random number generators for various distributions.
 # https://docs.python.org/3/library/random.html
 import random
@@ -120,7 +127,7 @@ lemmer = WordNetLemmatizer()
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "text-to-speech-278712-83ab5ff5f64a.json"
 
 # Introduction.
-intro = "My name's Dorothy. I'll answer your questions about chatbots. If you want to stop, say Bye!"
+intro = "My name's Dorothy. I'll answer your questions. If you want to stop, say Bye!"
 
 # Keyword Matching.
 GREETING_INPUTS = ("hello", "hi", "greetings", "sup", "what's up", "hey",)
@@ -170,6 +177,21 @@ def text_to_speech(user_input):
 
     # Deletes the created audio files.
     os.remove("synthetic.mp3")
+
+
+def openai_engine(prompt):
+    openai.api_key = "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"
+    openai_response = openai.Completion.create(
+        model="text-davinci-003",
+        prompt=prompt,
+        temperature=1,
+        max_tokens=2000,
+        top_p=1,
+        frequency_penalty=0,
+        presence_penalty=0)
+    answer = openai_response["choices"][0].text
+    print(answer)
+    return answer
 
 
 def speech_to_text():
@@ -247,34 +269,38 @@ flag = True
 while flag is True:
     try:
         user_response = speech_to_text()
-        user_response = user_response.lower()
-        if "bye" in user_response:
-            flag = False
-            text_to_speech("Bye! take care..")
-        else:
-            if "thanks" in user_response or "thank you" in user_response:
-                text_to_speech("You're welcome..")
-                continue
-            if "search" in user_response:
-                print("Dorothy:", wikipedia.summary(user_response, sentences=2))
-                text_to_speech(wikipedia.summary(user_response, sentences=2))
+        dorothy_response = openai_engine(user_response)
+        text_to_speech(dorothy_response)
 
-            else:
-                if greeting(user_response) is not None:
-                    this_greeting = greeting(user_response)
-                    print("Dorothy:", this_greeting)
-                    text_to_speech(this_greeting)
-                else:
-                    print(end="")
-                    this_response = response(user_response)
-                    print("Dorothy:", this_response)
-                    text_to_speech(this_response)
-                    sent_tokens.remove(user_response)
+#        user_response = user_response.lower()
+#        if "bye" in user_response:
+#            flag = False
+#            text_to_speech("Bye! take care..")
+#        else:
+#            if "thanks" in user_response or "thank you" in user_response:
+#                text_to_speech("You're welcome..")
+#                continue
+#            if "search" in user_response:
+#                print("Dorothy:", wikipedia.summary(user_response, sentences=2))
+#                text_to_speech(wikipedia.summary(user_response, sentences=2))
+#
+#            else:
+#                if greeting(user_response) is not None:
+#                    this_greeting = greeting(user_response)
+#                    print("Dorothy:", this_greeting)
+#                    text_to_speech(this_greeting)
+#                else:
+#                    print(end="")
+#                    this_response = response(user_response)
+#                    print("Dorothy:", this_response)
+#                    text_to_speech(this_response)
+#                    sent_tokens.remove(user_response)
 
     except speech_recognition.UnknownValueError:
         print("I'm sorry! I didn't hear what you said. Can you please repeat that?")
         text_to_speech("I'm sorry! I didn't hear what you said. Can you please repeat that?")
         continue
+
     except wikipedia.exceptions.PageError:
         print("I'm sorry! I couldn't find anything about that."
               "Could you please try a different search phrase?")

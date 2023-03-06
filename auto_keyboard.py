@@ -7,7 +7,17 @@ import pyautogui
 # https://docs.python.org/3/library/time.html
 import time
 
-with open(r'chatbot.txt') as write_this:
-    contents = write_this.read()
-time.sleep(3)
-pyautogui.typewrite(contents, interval=0.001)
+#with open(r'autokeys.txt') as write_this:
+#    contents = write_this.read()
+
+contents = "\t"
+count = 1
+enter = "\n"
+while True:
+    type_this = contents + enter
+    time.sleep(15)
+    pyautogui.typewrite(type_this, interval=0.001)
+    print(count)
+    print()
+    contents += contents
+    count += 1
