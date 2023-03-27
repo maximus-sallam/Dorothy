@@ -1,5 +1,4 @@
 # Dorothy
-Dorothy
 
 To use Dorothy, you'll have to have a Google Cloud project on your Google Cloud account and use an API Key from that project.</P>
 To do that:
