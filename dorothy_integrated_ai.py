@@ -180,6 +180,7 @@ def text_to_speech(user_input):
 
 
 def openai_engine(prompt):
+    # lol whoops. This was revoked for obvious reasons.
     openai.api_key = "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"
     openai_response = openai.Completion.create(
         model="text-davinci-003",
