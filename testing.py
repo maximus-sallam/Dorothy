@@ -2,6 +2,7 @@ import openai
 
 
 def openai_engine(prompt):
+    # Yes, I know I leaked my key. It doesn't work anymore.
     openai.api_key = "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"
     response = openai.Completion.create(
         model="text-davinci-003",
